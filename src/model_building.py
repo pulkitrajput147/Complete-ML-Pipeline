@@ -45,7 +45,6 @@ def load_params(params_path: str) -> dict:
         logger.error('Unexpected error: %s', e)
         raise
 
-
 def load_data(file_path: str) -> pd.DataFrame:
     """
     Load data from a CSV file.
@@ -81,8 +80,8 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> Rando
             raise ValueError("The number of samples in X_train and y_train must be the same.")
         
         logger.debug('Initializing RandomForest model with parameters: %s', params)
-        n_estimators = params.get('n_estimators', 25)
-        random_state = params.get('random_state', 2)
+        n_estimators = params.get('n_estimators')
+        random_state = params.get('random_state')
         clf = RandomForestClassifier(n_estimators=n_estimators, random_state=random_state)
         
         logger.debug('Model training started with %d samples', X_train.shape[0])
@@ -96,7 +95,6 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> Rando
     except Exception as e:
         logger.error('Error during model training: %s', e)
         raise
-
 
 def save_model(model, file_path: str) -> None:
     """
@@ -121,8 +119,8 @@ def save_model(model, file_path: str) -> None:
 
 def main():
     try:
-        #params = load_params('params.yaml')['model_building']
-        params = {'n_estimator':25,'random_state':2}
+        params = load_params('params.yaml')['model_building']
+        #params = {'n_estimator':25,'random_state':2}
         train_data = load_data('./data/processed/train_tfidf.csv')
         X_train = train_data.iloc[:, :-1].values
         y_train = train_data.iloc[:, -1].values
